@@ -1,5 +1,11 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+ getAuth,
+ createUserWithEmailAndPassword,
+ updateProfile,
+} from 'firebase/auth';
+import { db } from '../firebase.config';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { MdVisibility } from 'react-icons/md';
@@ -13,6 +19,8 @@ const RegisterScreen = () => {
  });
  const { name, email, password } = formData;
 
+ const navigate = useNavigate();
+
  const onChange = (e) => {
   setFormData((prevState) => ({
    ...prevState,
@@ -20,9 +28,28 @@ const RegisterScreen = () => {
   }));
  };
 
- const submitHandler = (e) => {
+ const submitHandler = async (e) => {
   e.preventDefault();
-  // Dispatch Login
+
+  try {
+   const auth = getAuth();
+
+   const userCredential = await createUserWithEmailAndPassword(
+    auth,
+    email,
+    password
+   );
+
+   const user = userCredential.user;
+
+   updateProfile(auth.currentUser, {
+    displayName: name,
+   });
+
+   navigate('/');
+  } catch (error) {
+   console.log(error);
+  }
  };
 
  return (
