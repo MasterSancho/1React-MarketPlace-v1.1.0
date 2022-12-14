@@ -1,0 +1,97 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import FormContainer from '../components/FormContainer';
+import { MdVisibility } from 'react-icons/md';
+
+const RegisterScreen = () => {
+ const [showPassword, setShowPassword] = useState(false);
+ const [formData, setFormData] = useState({
+  name: '',
+  email: '',
+  password: '',
+ });
+ const { name, email, password } = formData;
+
+ const onChange = (e) => {
+  setFormData((prevState) => ({
+   ...prevState,
+   [e.target.id]: e.target.value,
+  }));
+ };
+
+ const submitHandler = (e) => {
+  e.preventDefault();
+  // Dispatch Login
+ };
+
+ return (
+  <FormContainer>
+   <h1>Sign Up</h1>
+   <Form onSubmit={submitHandler}>
+    <Form.Group controlId='name'>
+     <Form.Label>Name</Form.Label>
+     <Form.Control
+      type='text'
+      placeholder='Enter name'
+      id='name'
+      value={name}
+      onChange={onChange}></Form.Control>
+    </Form.Group>
+
+    <Form.Group controlId='email'>
+     <Form.Label>Email Address</Form.Label>
+     <Form.Control
+      type='email'
+      placeholder='Enter email'
+      id='email'
+      value={email}
+      onChange={onChange}></Form.Control>
+    </Form.Group>
+
+    <Form.Group controlId='password'>
+     <Form.Label>Password</Form.Label>
+     <Form.Control
+      type={showPassword ? 'text' : 'password'}
+      placeholder='Enter Password'
+      id='password'
+      value={password}
+      onChange={onChange}></Form.Control>
+     <a
+      alt='show password'
+      onClick={() => setShowPassword((prevState) => !prevState)}>
+      <MdVisibility />
+     </a>
+    </Form.Group>
+
+    {/* <Form.Group controlId='confirmPassword'>
+     <Form.Label>Confirm Password</Form.Label>
+     <Form.Control
+      type='password'
+      placeholder='Confirm password'
+      value={confirmPassword}
+      onChange={(e) => setPassword(e.target.value)}></Form.Control>
+    </Form.Group> */}
+
+    <Button type='submit' variant='primary'>
+     Register
+    </Button>
+   </Form>
+
+   <Link to='/login' className='forgotPasswordLink'>
+    Sign In Instead
+   </Link>
+
+   {/* <Row className='py-3'>
+    <Col>
+     New Customer?{' '}
+     <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+      Register
+     </Link>
+    </Col>
+   </Row> */}
+  </FormContainer>
+ );
+};
+
+export default RegisterScreen;
