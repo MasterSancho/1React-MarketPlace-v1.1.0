@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import FormContainer from '../components/FormContainer';
 import { MdVisibility } from 'react-icons/md';
@@ -24,9 +25,24 @@ const LoginScreen = () => {
   }));
  };
 
- const submitHandler = (e) => {
+ const submitHandler = async (e) => {
   e.preventDefault();
-  // Dispatch Login
+
+  try {
+   const auth = getAuth();
+
+   const userCredential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
+   );
+
+   if (userCredential.user) {
+    navigate('/');
+   }
+  } catch (error) {
+   console.log(error);
+  }
  };
 
  return (
